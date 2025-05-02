@@ -1,135 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Lavan Tracker</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lavan Weight Tracker</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      background-color: #121212;
-      color: #fff;
-      font-family: sans-serif;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #121212, #1f1f1f);
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
       padding: 20px;
     }
-    input, button {
-      padding: 8px;
-      margin: 5px 0;
-      border-radius: 6px;
-      border: none;
-      font-size: 16px;
+
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      color: #00f7ff;
+      text-shadow: 0 0 10px #00f7ff;
+      margin-bottom: 20px;
     }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .form-section {
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .form-section form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input, button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
     input {
-      width: 100%;
-      background: #1e1e1e;
+      background-color: #333;
       color: #fff;
     }
+
     button {
-      background-color: #03DAC6;
+      background: #00f7ff;
       color: #000;
-      font-weight: bold;
-      width: 100%;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
-    canvas {
-      background: #1e1e1e;
-      border-radius: 8px;
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px #00f7ff;
+    }
+
+    #clearBtn {
+      background-color: #ff4c4c;
+      color: #fff;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 8px 0;
+      background: #222;
       padding: 10px;
-      margin-top: 20px;
+      border-radius: 5px;
+    }
+
+    li button {
+      margin-left: 10px;
+      background-color: #555;
+      color: #fff;
+    }
+
+    .chart-section {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    canvas {
+      background-color: #111;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
     }
   </style>
 </head>
 <body>
+  <h1>Lavan Weight Tracker</h1>
+  <div class="container">
+    <div class="form-section">
+      <form id="weightForm">
+        <input type="number" id="weightInput" placeholder="Enter weight (kg)" required />
+        <button type="submit">Add Weight</button>
+        <button type="button" id="clearBtn">Clear All</button>
+      </form>
 
-  <h2>Lavan Tracker</h2>
+      <h2>Entries</h2>
+      <ul id="entryList"></ul>
+    </div>
 
-  <input type="number" id="weight" placeholder="Weight (kg)">
-  <input type="number" id="chest" placeholder="Chest (cm)">
-  <input type="number" id="waist" placeholder="Waist (cm)">
-  <input type="number" id="hips" placeholder="Hips (cm)">
-  <button onclick="addEntry()">Add Today's Entry</button>
-
-  <canvas id="progressChart" height="200"></canvas>
+    <div class="chart-section">
+      <canvas id="weightChart"></canvas>
+    </div>
+  </div>
 
   <script>
-    let data = JSON.parse(localStorage.getItem("lavanData")) || [];
+    const form = document.getElementById("weightForm");
+    const input = document.getElementById("weightInput");
+    const clearBtn = document.getElementById("clearBtn");
+    const entryList = document.getElementById("entryList");
+    const ctx = document.getElementById("weightChart").getContext("2d");
 
-    function addEntry() {
-      const weight = parseFloat(document.getElementById("weight").value);
-      const chest = parseFloat(document.getElementById("chest").value);
-      const waist = parseFloat(document.getElementById("waist").value);
-      const hips = parseFloat(document.getElementById("hips").value);
-      const date = new Date().toLocaleDateString();
+    let weightData = JSON.parse(localStorage.getItem("weightData")) || [];
 
-      if (isNaN(weight) || isNaN(chest) || isNaN(waist) || isNaN(hips)) {
-        alert("Please fill all fields.");
-        return;
-      }
-
-      data.push({ date, weight, chest, waist, hips });
-      localStorage.setItem("lavanData", JSON.stringify(data));
-      document.getElementById("weight").value = '';
-      document.getElementById("chest").value = '';
-      document.getElementById("waist").value = '';
-      document.getElementById("hips").value = '';
-      renderChart();
-    }
-
-    function renderChart() {
-      const labels = data.map(d => d.date);
-      const weightData = data.map(d => d.weight);
-      const chestData = data.map(d => d.chest);
-      const waistData = data.map(d => d.waist);
-      const hipsData = data.map(d => d.hips);
-
-      const ctx = document.getElementById('progressChart').getContext('2d');
-      if (window.progressChart) window.progressChart.destroy();
-
-      window.progressChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: 'Weight (kg)',
-              data: weightData,
-              borderColor: '#03DAC6',
-              backgroundColor: 'transparent',
-              tension: 0.3
-            },
-            {
-              label: 'Chest (cm)',
-              data: chestData,
-              borderColor: '#BB86FC',
-              backgroundColor: 'transparent',
-              tension: 0.3
-            },
-            {
-              label: 'Waist (cm)',
-              data: waistData,
-              borderColor: '#CF6679',
-              backgroundColor: 'transparent',
-              tension: 0.3
-            },
-            {
-              label: 'Hips (cm)',
-              data: hipsData,
-              borderColor: '#FFB74D',
-              backgroundColor: 'transparent',
-              tension: 0.3
-            }
-          ]
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: weightData.map((_, i) => `Day ${i + 1}`),
+        datasets: [{
+          label: 'Weight (kg)',
+          data: weightData,
+          fill: false,
+          borderColor: '#00f7ff',
+          backgroundColor: '#00f7ff',
+          tension: 0.2,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            ticks: { color: "#ccc" },
+            beginAtZero: false
+          },
+          x: {
+            ticks: { color: "#ccc" }
+          }
         },
-        options: {
-          plugins: { legend: { labels: { color: '#fff' } } },
-          scales: {
-            x: { ticks: { color: '#fff' } },
-            y: { ticks: { color: '#fff' } }
+        plugins: {
+          legend: {
+            labels: {
+              color: '#00f7ff'
+            }
           }
         }
+      }
+    });
+
+    function updateStorageAndChart() {
+      localStorage.setItem("weightData", JSON.stringify(weightData));
+      chart.data.labels = weightData.map((_, i) => `Day ${i + 1}`);
+      chart.data.datasets[0].data = weightData;
+      chart.update();
+      renderEntryList();
+    }
+
+    function renderEntryList() {
+      entryList.innerHTML = "";
+      weightData.forEach((weight, index) => {
+        const li = document.createElement("li");
+        li.textContent = `Day ${index + 1}: ${weight} kg`;
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.onclick = () => {
+          const newWeight = prompt("Enter new weight:", weight);
+          if (newWeight !== null && !isNaN(parseFloat(newWeight))) {
+            weightData[index] = parseFloat(newWeight);
+            updateStorageAndChart();
+          }
+        };
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.onclick = () => {
+          weightData.splice(index, 1);
+          updateStorageAndChart();
+        };
+
+        li.appendChild(editBtn);
+        li.appendChild(deleteBtn);
+        entryList.appendChild(li);
       });
     }
 
-    renderChart();
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const weight = parseFloat(input.value);
+      if (!isNaN(weight)) {
+        weightData.push(weight);
+        input.value = '';
+        updateStorageAndChart();
+      }
+    });
+
+    clearBtn.addEventListener("click", function () {
+      if (confirm("Are you sure you want to clear all data?")) {
+        weightData = [];
+        updateStorageAndChart();
+      }
+    });
+
+    // Initial render
+    renderEntryList();
   </script>
 </body>
 </html>
+
