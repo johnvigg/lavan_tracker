@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lavan Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+    }
+    input {
+      width: 100%;
+      background: #1e1e1e;
+      color: #fff;
+    }
+    button {
+      background-color: #03DAC6;
+      color: #000;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+    }
+    canvas {
+      background: #1e1e1e;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Lavan Tracker</h2>
+
+  <input type="number" id="weight" placeholder="Weight (kg)">
+  <input type="number" id="chest" placeholder="Chest (cm)">
+  <input type="number" id="waist" placeholder="Waist (cm)">
+  <input type="number" id="hips" placeholder="Hips (cm)">
+  <button onclick="addEntry()">Add Today's Entry</button>
+
+  <canvas id="progressChart" height="200"></canvas>
+
+  <script>
+    let data = JSON.parse(localStorage.getItem("lavanData")) || [];
+
+    function addEntry() {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const chest = parseFloat(document.getElementById("chest").value);
+      const waist = parseFloat(document.getElementById("waist").value);
+      const hips = parseFloat(document.getElementById("hips").value);
+      const date = new Date().toLocaleDateString();
+
+      if (isNaN(weight) || isNaN(chest) || isNaN(waist) || isNaN(hips)) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      data.push({ date, weight, chest, waist, hips });
+      localStorage.setItem("lavanData", JSON.stringify(data));
+      document.getElementById("weight").value = '';
+      document.getElementById("chest").value = '';
+      document.getElementById("waist").value = '';
+      document.getElementById("hips").value = '';
+      renderChart();
+    }
+
+    function renderChart() {
+      const labels = data.map(d => d.date);
+      const weightData = data.map(d => d.weight);
+      const chestData = data.map(d => d.chest);
+      const waistData = data.map(d => d.waist);
+      const hipsData = data.map(d => d.hips);
+
+      const ctx = document.getElementById('progressChart').getContext('2d');
+      if (window.progressChart) window.progressChart.destroy();
+
+      window.progressChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Weight (kg)',
+              data: weightData,
+              borderColor: '#03DAC6',
+              backgroundColor: 'transparent',
+              tension: 0.3
+            },
+            {
+              label: 'Chest (cm)',
+              data: chestData,
+              borderColor: '#BB86FC',
+              backgroundColor: 'transparent',
+              tension: 0.3
+            },
+            {
+              label: 'Waist (cm)',
+              data: waistData,
+              borderColor: '#CF6679',
+              backgroundColor: 'transparent',
+              tension: 0.3
+            },
+            {
+              label: 'Hips (cm)',
+              data: hipsData,
+              borderColor: '#FFB74D',
+              backgroundColor: 'transparent',
+              tension: 0.3
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } } },
+          scales: {
+            x: { ticks: { color: '#fff' } },
+            y: { ticks: { color: '#fff' } }
+          }
+        }
+      });
+    }
+
+    renderChart();
+  </script>
+</body>
+</html>
