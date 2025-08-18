@@ -4,7 +4,208 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Klas.Med - Medical Imaging Equipment</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Base */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at top, #111827, #000);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header {
+      background: rgba(31, 41, 55, 0.95);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      color: #3b82f6;
+      text-shadow: 0 0 10px #2563eb;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 15px rgba(59,130,246,0.6);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #d1d5db;
+      margin-bottom: 2rem;
+    }
+    .cta {
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      color: white;
+      padding: 0.75rem 2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+    .cta:hover {
+      transform: scale(1.1);
+    }
+
+    /* Products */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 3rem 2rem;
+    }
+    .card {
+      background: #1f2937;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(59,130,246,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(59,130,246,0.6);
+    }
+    .rotating3d {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1rem;
+      border: 3px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin3d 6s linear infinite;
+    }
+    @keyframes spin3d {
+      from { transform: rotate3d(1,1,0,0deg); }
+      to   { transform: rotate3d(1,1,0,360deg); }
+    }
+
+    /* Features */
+    .features {
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .feature {
+      background: #1f2937;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(16,185,129,0.3);
+      transition: transform 0.3s;
+    }
+    .feature:hover {
+      transform: scale(1.05);
+    }
+
+    /* Contact */
+    .contact {
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    form {
+      background: #1f2937;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 500px;
+      margin: 2rem auto;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background: #374151;
+      color: white;
+    }
+    textarea {
+      min-height: 120px;
+    }
+    button.submit {
+      width: 100%;
+      padding: 0.75rem;
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      color: white;
+      font-size: 1rem;
+    }
+    button.submit:hover {
+      transform: scale(1.05);
+    }
+
+    /* Background Effects */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 10px solid rgba(59,130,246,0.3);
+      animation: rotate 30s linear infinite;
+      z-index: 0;
+    }
+    .circle.large {
+      width: 400px;
+      height: 400px;
+      top: 100px;
+      left: 50px;
+    }
+    .circle.small {
+      width: 500px;
+      height: 500px;
+      border-color: rgba(16,185,129,0.2);
+      bottom: 100px;
+      right: 100px;
+      animation-duration: 50s;
+      animation-direction: reverse;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0); }
+      to { transform: rotate(360deg); }
+    }
+    .scanner-beam {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+      animation: scan 3s infinite linear;
+      z-index: 999;
+    }
+    @keyframes scan {
+      from { transform: translateY(0); }
+      to   { transform: translateY(100vh); }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #1f2937;
+      color: #9ca3af;
+      margin-top: 3rem;
+    }
+  </style>
 </head>
 <body>
   <!-- Background -->
@@ -15,97 +216,69 @@
   <!-- Header -->
   <header>
     <h1>Klas.Med</h1>
-    <nav>
-      <button class="active" onclick="showTab('home', event)">Home</button>
-      <button onclick="showTab('products', event)">Products</button>
-      <button onclick="showTab('features', event)">Features</button>
-      <button onclick="showTab('about', event)">About</button>
-      <button onclick="showTab('contact', event)">Contact</button>
-    </nav>
   </header>
 
-  <!-- Main -->
-  <main>
-    <!-- Home -->
-    <section id="home" class="active">
-      <div class="hero">
-        <h2>Revolutionizing Medical Imaging</h2>
-        <p>Cutting-edge MRI, CT, and X-Ray equipment for the hospitals of tomorrow.</p>
-        <a href="#products" onclick="showTab('products', event)" class="cta">Explore Products</a>
+  <!-- Hero -->
+  <div class="hero">
+    <h2>Revolutionizing Medical Imaging</h2>
+    <p>Cutting-edge MRI, CT, and X-Ray equipment for the hospitals of tomorrow.</p>
+    <a href="#products" class="cta">Explore Products</a>
+  </div>
+
+  <!-- Products -->
+  <section id="products">
+    <h2>Our Products</h2>
+    <div class="products">
+      <div class="card">
+        <img src="https://source.unsplash.com/300x200/?mri" alt="MRI Scanner">
+        <div class="rotating3d"></div>
+        <h3>MRI Scanners</h3>
+        <p>High-performance MRI scanners designed for precision and efficiency.</p>
       </div>
-    </section>
-
-    <!-- Products -->
-    <section id="products">
-      <h2>Our Products</h2>
-      <div class="products">
-        <div class="card">
-          <img src="https://source.unsplash.com/300x200/?mri" alt="MRI Scanner">
-          <div class="rotating3d"></div>
-          <h3>MRI Scanners</h3>
-          <p>High-performance MRI scanners designed for precision and efficiency.</p>
-        </div>
-        <div class="card">
-          <img src="https://source.unsplash.com/300x200/?ctscan" alt="CT Scanner">
-          <div class="rotating3d"></div>
-          <h3>CT Scanners</h3>
-          <p>Advanced CT scanners built for reliability and speed.</p>
-        </div>
-        <div class="card">
-          <img src="https://source.unsplash.com/300x200/?xray" alt="X-Ray Machine">
-          <div class="rotating3d"></div>
-          <h3>X-Ray Machines</h3>
-          <p>Durable X-ray solutions for hospitals and diagnostic centers.</p>
-        </div>
+      <div class="card">
+        <img src="https://source.unsplash.com/300x200/?ctscan" alt="CT Scanner">
+        <div class="rotating3d"></div>
+        <h3>CT Scanners</h3>
+        <p>Advanced CT scanners built for reliability and speed.</p>
       </div>
-    </section>
-
-    <!-- Features -->
-    <section id="features">
-      <h2>Why Choose Klas.Med?</h2>
-      <div class="features-grid">
-        <div class="feature">
-          <h3>⚡ Innovation</h3>
-          <p>Our devices use AI-driven imaging enhancements for faster, clearer results.</p>
-        </div>
-        <div class="feature">
-          <h3>🛡️ Reliability</h3>
-          <p>Over 20 years in the industry with globally trusted medical partners.</p>
-        </div>
-        <div class="feature">
-          <h3>🌍 Global Reach</h3>
-          <p>We supply advanced medical equipment to hospitals worldwide.</p>
-        </div>
-        <div class="feature">
-          <h3>💡 Support</h3>
-          <p>24/7 technical support and regular software updates included.</p>
-        </div>
+      <div class="card">
+        <img src="https://source.unsplash.com/300x200/?xray" alt="X-Ray Machine">
+        <div class="rotating3d"></div>
+        <h3>X-Ray Machines</h3>
+        <p>Durable X-ray solutions for hospitals and diagnostic centers.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- About -->
-    <section id="about">
-      <h2>About Us</h2>
-      <p>Klas.Med has been at the forefront of medical imaging technology for over 20 years, delivering reliable and innovative solutions to healthcare providers across the globe.</p>
-    </section>
+  <!-- Features -->
+  <section class="features">
+    <h2>Why Choose Klas.Med?</h2>
+    <div class="features-grid">
+      <div class="feature"><h3>⚡ Innovation</h3><p>AI-driven imaging for clearer results.</p></div>
+      <div class="feature"><h3>🛡️ Reliability</h3><p>Trusted worldwide for 20+ years.</p></div>
+      <div class="feature"><h3>🌍 Global Reach</h3><p>Supplying hospitals across the globe.</p></div>
+      <div class="feature"><h3>💡 Support</h3><p>24/7 service & software updates.</p></div>
+    </div>
+  </section>
 
-    <!-- Contact -->
-    <section id="contact">
-      <h2>Contact Us</h2>
-      <form action="https://formspree.io/f/mqazygzb" method="POST">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="_replyto" placeholder="Your Email" required>
-        <textarea name="message" placeholder="Your Message" required></textarea>
-        <button class="submit" type="submit">Send Message</button>
-      </form>
-    </section>
-  </main>
+  <!-- Contact -->
+  <section class="contact">
+    <h2>Contact Us</h2>
+    <form action="https://formspree.io/f/mqazygzb" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="_replyto" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" required></textarea>
+      <button class="submit" type="submit">Send Message</button>
+    </form>
+  </section>
 
   <!-- Footer -->
   <footer>
     © <span id="year"></span> Klas.Med. All Rights Reserved.
   </footer>
 
-  <script src="script.js" defer></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
