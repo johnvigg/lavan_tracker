@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  line-height: 1.6;
+  background-color: #fff;
+  color: #333;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #006d77;
+  color: #fff;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.hero {
+  background-image: url('https://www.shutterstock.com/image-photo/engineer-holding-blueprint-checking-mechanical-600nw-1027179806.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero .overlay {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  color: #fff;
+  text-align: center;
+  max-width: 90%;
+}
+
+.section {
+  padding: 4rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.section h2 {
+  color: #006d77;
+  margin-bottom: 1rem;
+}
+
+.section h3 {
+  color: #333;
+  margin-top: 1rem;
+}
+
+.section ul {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.section ul li {
+  margin-bottom: 0.5rem;
+}
+
+.section.gray {
+  background-color: #f4f4f4;
+}
+
+a {
+  color: #007b9e;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #006d77;
+  color: #fff;
+}
