@@ -586,40 +586,57 @@
         <h2>Contact &amp; Demo</h2>
         <p>Talk to our clinical and integration team about your needs.</p>
       </div>
-      <form class="contact" aria-label="Contact form">
-        <div>
-          <label for="name">Your name</label>
-          <input id="name" name="name" autocomplete="name" required />
-        </div>
-        <div>
-          <label for="email">Work email</label>
-          <input id="email" name="email" type="email" autocomplete="email" required />
-        </div>
-        <div>
-          <label for="phone">Phone</label>
-          <input id="phone" name="phone" type="tel" autocomplete="tel" />
-        </div>
-        <div>
-          <label for="org">Organization</label>
-          <input id="org" name="organization" />
-        </div>
-        <div>
-          <label for="role">Your role</label>
-          <input id="role" name="role" />
-        </div>
-        <div class="full">
-          <label for="msg">How can we help?</label>
-          <textarea id="msg" name="message" placeholder="Tell us about your workflow, systems, and goals." required></textarea>
-        </div>
-        <div class="full consent">
-          <input id="consent" type="checkbox" required />
-          <label for="consent">I agree to the <a href="#privacy">privacy policy</a> and consent to being contacted by Klas‑Med.</label>
-        </div>
-        <div class="full">
-          <button class="btn primary" type="submit">Send message</button>
-          <a class="btn" href="mailto:kalyan@klas-med.com?subject=Klas‑Med%20Demo%20Request">Or email us directly</a>
-        </div>
-      </form>
+      <form name="contact"
+      class="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      action="/thanks.html">
+  <input type="hidden" name="form-name" value="contact" />
+  <!-- Honeypot (hidden field to trap bots) -->
+  <p style="display:none">
+    <label>Don’t fill this out: <input name="bot-field" /></label>
+  </p>
+
+  <!-- Your existing fields (must have name=) -->
+  <div>
+    <label for="name">Your name</label>
+    <input id="name" name="name" autocomplete="name" required />
+  </div>
+  <div>
+    <label for="email">Work email</label>
+    <input id="email" name="email" type="email" autocomplete="email" required />
+  </div>
+  <div>
+    <label for="phone">Phone</label>
+    <input id="phone" name="phone" type="tel" autocomplete="tel" />
+  </div>
+  <div>
+    <label for="org">Organization</label>
+    <input id="org" name="organization" />
+  </div>
+  <div>
+    <label for="role">Your role</label>
+    <input id="role" name="role" />
+  </div>
+  <div class="full">
+    <label for="msg">How can we help?</label>
+    <textarea id="msg" name="message" required></textarea>
+  </div>
+
+  <!-- Optional: Netlify-provided reCAPTCHA v2 -->
+  <div class="full" data-netlify-recaptcha="true"></div>
+
+  <div class="full consent">
+    <input id="consent" name="consent" type="checkbox" required />
+    <label for="consent">I agree to the privacy policy and consent to being contacted by Klas-Med.</label>
+  </div>
+
+  <div class="full">
+    <button class="btn primary" type="submit">Send message</button>
+    <a class="btn" href="mailto:kalyan@klas-med.com?subject=Klas-Med%20Demo%20Request">Or email us directly</a>
+  </div>
+</form>
     </section>
   </main>
 
