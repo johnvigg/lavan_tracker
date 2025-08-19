@@ -1,275 +1,776 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Klas.Med - Medical Imaging Equipment</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Klas‑Med | AI‑Powered Clinical Solutions & PACS Integration in UAE</title>
+  <meta name="description" content="Klas‑Med delivers AI software, clinical training, and PACS/RIS/HIS integration for UAE hospitals—fast adoption, measurable impact." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Klas‑Med | AI‑Powered Clinical Solutions in the UAE" />
+  <meta property="og:description" content="AI software, clinical training, and PACS/RIS/HIS integration for UAE hospitals." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.klas-med.com" />
+
   <style>
+    /* ------------------------------
+       Design Tokens (CSS Variables)
+       ------------------------------ */
+    :root {
+      /* Brand & palette */
+      --brand-600: #1E88E5;
+      --brand-700: #1565C0;
+      --teal-500: #00B8A9;
+      --neutral-900: #1B1F23;
+      --neutral-800: #2A2F35;
+      --neutral-700: #3E4C59;
+      --neutral-500: #7B8794;
+      --neutral-300: #CBD2D9;
+      --neutral-200: #E4E7EB;
+      --neutral-150: #EEF2F6;
+      --neutral-100: #F5F7FA;
+      --white: #ffffff;
+
+      /* Dynamic accent driven by mouse hue */
+      --accent-h: 210;
+      --accent: hsl(var(--accent-h) 90% 52%);
+
+      /* Theme */
+      --bg: var(--white);
+      --surface: var(--white);
+      --text: var(--neutral-700);
+      --heading: var(--neutral-900);
+      --muted: var(--neutral-500);
+      --card: var(--white);
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --ring: 0 0 0 3px color-mix(in oklab, var(--accent) 30%, transparent);
+
+      /* Layout */
+      --max-w: 1200px;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --radius-lg: 18px;
+
+      /* Typography */
+      --font-ui: system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+      --h1: clamp(32px, 4vw, 44px);
+      --h2: clamp(26px, 3vw, 34px);
+      --h3: clamp(20px, 2.2vw, 26px);
+      --lead: clamp(16px, 1.8vw, 20px);
+      --body: 16px;
+
+      /* Cursor position (updated via JS) */
+      --mx: .5;
+      --my: .2;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0e1116;
+      --surface: #12161d;
+      --text: #cfd6df;
+      --heading: #e7edf5;
+      --muted: #98a1ab;
+      --card: #0f1319;
+      --shadow: 0 12px 34px rgba(0,0,0,.45);
+      --neutral-150: #12161d;
+      --neutral-100: #0e1116;
+    }
+
+    /* ------------------------------
+       Base & Utilities
+       ------------------------------ */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
       margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: radial-gradient(circle at top, #111827, #000);
-      color: white;
+      font-family: var(--font-ui);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
       overflow-x: hidden;
     }
 
-    header {
-      background: rgba(31, 41, 55, 0.95);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      backdrop-filter: blur(10px);
-    }
-    header h1 {
-      color: #3b82f6;
-      text-shadow: 0 0 10px #2563eb;
-    }
-
-    .hero {
-      padding: 5rem 2rem;
-      text-align: center;
-    }
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 15px rgba(59,130,246,0.6);
-    }
-    .hero p {
-      font-size: 1.2rem;
-      color: #d1d5db;
-      margin-bottom: 2rem;
-    }
-    .cta {
-      background: linear-gradient(90deg, #3b82f6, #2563eb);
-      color: white;
-      padding: 0.75rem 2rem;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: transform 0.3s;
-    }
-    .cta:hover {
-      transform: scale(1.1);
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin: 3rem 2rem;
-    }
-    .card {
-      background: #1f2937;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(59,130,246,0.4);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .card img {
-      width: 100%;
-      border-radius: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 0 30px rgba(59,130,246,0.6);
-    }
-    .rotating3d {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 1rem;
-      border: 3px solid #3b82f6;
-      border-radius: 50%;
-      animation: spin3d 6s linear infinite;
-    }
-    @keyframes spin3d {
-      from { transform: rotate3d(1,1,0,0deg); }
-      to   { transform: rotate3d(1,1,0,360deg); }
-    }
-
-    .features {
-      padding: 3rem 2rem;
-      text-align: center;
-    }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    .feature {
-      background: #1f2937;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 15px rgba(16,185,129,0.3);
-      transition: transform 0.3s;
-    }
-    .feature:hover {
-      transform: scale(1.05);
-    }
-
-    .contact {
-      padding: 3rem 2rem;
-      text-align: center;
-    }
-    form {
-      background: #1f2937;
-      padding: 2rem;
-      border-radius: 1rem;
-      max-width: 500px;
-      margin: 2rem auto;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      background: #374151;
-      color: white;
-    }
-    textarea {
-      min-height: 120px;
-    }
-    button.submit {
-      width: 100%;
-      padding: 0.75rem;
-      background: linear-gradient(90deg, #3b82f6, #2563eb);
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      color: white;
-      font-size: 1rem;
-    }
-    button.submit:hover {
-      transform: scale(1.05);
-    }
-
-    .circle {
-      position: absolute;
-      border-radius: 50%;
-      border: 10px solid rgba(59,130,246,0.3);
-      animation: rotate 30s linear infinite;
+    /* Dynamic background that follows the cursor */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(45vmax 45vmax at calc(var(--mx)*100%) calc(var(--my)*100%),
+          color-mix(in oklab, var(--accent) 20%, transparent), transparent 60%);
+      opacity: 0.9;
+      transition: opacity .3s ease;
       z-index: 0;
     }
-    .circle.large {
-      width: 400px;
-      height: 400px;
-      top: 100px;
-      left: 50px;
-    }
-    .circle.small {
-      width: 500px;
-      height: 500px;
-      border-color: rgba(16,185,129,0.2);
-      bottom: 100px;
-      right: 100px;
-      animation-duration: 50s;
-      animation-direction: reverse;
-    }
-    @keyframes rotate {
-      from { transform: rotate(0); }
-      to { transform: rotate(360deg); }
-    }
-    .scanner-beam {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-      animation: scan 3s infinite linear;
-      z-index: 999;
-    }
-    @keyframes scan {
-      from { transform: translateY(0); }
-      to   { transform: translateY(100vh); }
+    @media (prefers-reduced-motion: reduce) {
+      body::before { opacity: .25; }
     }
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #1f2937;
-      color: #9ca3af;
-      margin-top: 3rem;
+    a { color: var(--brand-600); text-decoration: none; }
+    a:hover { color: var(--brand-700); }
+    img { max-width: 100%; display: block; }
+    .container { width: min(100%, var(--max-w)); margin-inline: auto; padding-inline: 20px; position: relative; z-index: 1; }
+    .grid { display: grid; gap: 24px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 18px; border-radius: 999px; border: 1px solid var(--neutral-200);
+      background: var(--surface); color: var(--heading); font-weight: 600; box-shadow: var(--shadow); position: relative;
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
     }
+    .btn:hover { transform: translateY(-1px); border-color: color-mix(in oklab, var(--accent) 40%, var(--neutral-200)); }
+    .btn.primary { background: var(--accent); color: #fff; border-color: transparent; }
+    .btn.primary:hover { background: color-mix(in oklab, var(--accent) 85%, #000 0%); }
+
+    .badge { display:inline-block; padding:6px 10px; border-radius:999px; background: color-mix(in oklab, var(--accent) 12%, var(--neutral-150)); color: var(--heading); font-size: 12px; border:1px solid color-mix(in oklab, var(--accent) 20%, var(--neutral-200)); }
+
+    /* Focus ring */
+    :focus-visible { outline: none; box-shadow: var(--ring); border-radius: 8px; }
+
+    /* ------------------------------
+       Header / Nav
+       ------------------------------ */
+    .skip { position: absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden; }
+    .skip:focus { left: 12px; top: 12px; width: auto; height: auto; padding: 10px 14px; background: #fff; border-radius: 8px; z-index: 999; }
+
+    header.site {
+      position: sticky; top: 0; backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--neutral-200);
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      z-index: 50;
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0;
+    }
+    .brand {
+      display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px; color: var(--heading);
+    }
+    .brand svg { width: 28px; height: 28px; }
+    nav ul { display:flex; gap: 16px; list-style:none; padding:0; margin:0; }
+    nav a { color: var(--text); font-weight: 600; padding: 8px 10px; border-radius: 8px; }
+    nav a:hover { background: color-mix(in oklab, var(--accent) 10%, var(--neutral-150)); color: var(--heading); }
+
+    .nav-right { display:flex; align-items:center; gap: 10px; }
+    .theme-toggle, .menu-toggle { background: transparent; border: 1px solid var(--neutral-200); border-radius: 10px; padding: 8px 10px; cursor: pointer; color: var(--text); }
+    .menu-toggle { display:none; }
+    @media (max-width: 920px) {
+      nav ul { display:none; position:absolute; top:60px; left:10px; right:10px; padding:12px; background: var(--surface); border:1px solid var(--neutral-200); border-radius: 12px; box-shadow: var(--shadow); }
+      nav ul.open { display:flex; flex-direction: column; }
+      .menu-toggle { display:inline-block; }
+    }
+
+    /* ------------------------------
+       Hero
+       ------------------------------ */
+    .hero {
+      position: relative; padding: 72px 0 40px; overflow: hidden;
+    }
+    .hero .wrap {
+      display: grid; gap: 28px; align-items: center;
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+    .hero h1 { font-size: var(--h1); line-height: 1.15; margin: 0; color: var(--heading); }
+    .hero p.lead { font-size: var(--lead); color: var(--text); margin: 10px 0 16px; }
+    .hero .actions { display:flex; gap: 12px; flex-wrap: wrap; }
+    .hero .media {
+      position: relative; border-radius: var(--radius-lg); overflow: hidden;
+      border: 1px solid var(--neutral-200); background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 14%, transparent), transparent 60%);
+      box-shadow: var(--shadow); min-height: 280px;
+      transform-style: preserve-3d;
+    }
+    .hero .media .overlay {
+      position:absolute; inset:0; background:
+        repeating-linear-gradient(90deg, color-mix(in oklab, var(--accent) 15%, transparent), transparent 14px, transparent 28px),
+        radial-gradient(600px 300px at calc(var(--mx)*100%) calc(var(--my)*120%), color-mix(in oklab, var(--accent) 25%, transparent), transparent 60%);
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+    }
+    .hero .media .screen {
+      position:absolute; inset:12px; border-radius: 12px; background: var(--bg);
+      box-shadow: inset 0 0 0 1px var(--neutral-200), inset 0 0 10px rgba(0,0,0,.06);
+      display:flex; align-items:center; justify-content:center; padding: 14px;
+    }
+    .mini-pacs {
+      width:100%; border-radius: 10px; background: var(--card); display:grid; grid-template-columns: 1fr 280px; gap: 12px;
+      border:1px solid var(--neutral-200); overflow:hidden;
+    }
+    .mini-pacs .viewport { padding: 12px; display:grid; place-items:center; background: #000; }
+    .mini-pacs .viewport .scan {
+      width: 90%; aspect-ratio: 1; border-radius: 12px;
+      background:
+        radial-gradient(circle at 60% 45%, #e7f2ff 0 6%, #111 7% 100%);
+      position: relative;
+    }
+    .mini-pacs .viewport .scan::after {
+      content:"AI"; position:absolute; right:-8px; top:-8px; font-size:12px; padding:4px 6px; background: var(--accent); color:#fff; border-radius:999px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    }
+    .mini-pacs .sidebar {
+      background: var(--surface); border-left: 1px solid var(--neutral-200); padding: 12px;
+      display: grid; align-content: start; gap: 10px;
+    }
+    .mini-pacs .row {
+      display:flex; align-items:center; justify-content:space-between; background: color-mix(in oklab, var(--accent) 6%, var(--neutral-150));
+      border:1px solid var(--neutral-200); padding: 8px 10px; border-radius: 10px; font-size:14px;
+    }
+    .mini-pacs .row strong { color: var(--heading); }
+    @media (max-width: 960px) {
+      .hero .wrap { grid-template-columns: 1fr; }
+    }
+
+    /* ------------------------------
+       Sections
+       ------------------------------ */
+    section { padding: 56px 0; }
+    section .head { margin-bottom: 18px; }
+    h2 { font-size: var(--h2); color: var(--heading); margin: 0 0 8px; }
+    h3 { font-size: var(--h3); color: var(--heading); margin: 0 0 4px; }
+    p { margin: 0 0 10px; }
+
+    .card {
+      background: var(--card); border:1px solid var(--neutral-200); border-radius: var(--radius);
+      padding: 18px; box-shadow: var(--shadow); position: relative;
+      transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+    .card:hover { border-color: color-mix(in oklab, var(--accent) 30%, var(--neutral-200)); box-shadow: 0 16px 40px rgba(0,0,0,.12); }
+    .tilt { will-change: transform; transform-style: preserve-3d; }
+    .tilt .shine {
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(400px 400px at calc(var(--mx)*100%) calc(var(--my)*100%), color-mix(in oklab, #fff 10%, transparent), transparent 60%);
+      mix-blend-mode: overlay; opacity: .6;
+    }
+
+    .feature-grid { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 1024px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px)  { .feature-grid { grid-template-columns: 1fr; } }
+
+    .solutions .item { display:grid; grid-template-columns: 1fr .8fr; gap: 18px; align-items:center; }
+    .solutions .item .illu { min-height: 180px; border-radius: 12px; border:1px solid var(--neutral-200); background: color-mix(in oklab, var(--accent) 10%, var(--neutral-150)); }
+    @media (max-width: 900px) { .solutions .item { grid-template-columns: 1fr; } }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .stat { padding: 18px; border-radius: 12px; border: 1px solid var(--neutral-200); background: var(--surface); text-align:center; }
+    .stat .value { font-weight: 800; font-size: 24px; color: var(--heading); }
+    .stat .label { font-size: 13px; color: var(--muted); }
+
+    blockquote.quote {
+      margin: 0; padding: 18px; border-left: 4px solid var(--accent); background: color-mix(in oklab, var(--accent) 6%, var(--neutral-150));
+      border-radius: 8px;
+    }
+
+    /* Job list & detail */
+    .job-card header { display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap; }
+    .job-meta { display:flex; gap:8px; font-size: 13px; color: var(--muted); }
+    .job-card ul { padding-left: 18px; margin: 8px 0; }
+    .job-card li { margin-bottom: 6px; }
+
+    /* Contact */
+    form.contact {
+      display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr);
+      background: var(--surface); padding: 18px; border: 1px solid var(--neutral-200); border-radius: 12px; box-shadow: var(--shadow);
+    }
+    form.contact .full { grid-column: 1/-1; }
+    label { font-weight: 600; font-size: 14px; color: var(--heading); display:block; margin-bottom: 6px; }
+    input, textarea, select {
+      width: 100%; padding: 12px; border-radius: 10px; border:1px solid var(--neutral-200); background: var(--bg); color: var(--text);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 20%, transparent); }
+    textarea { min-height: 120px; resize: vertical; }
+    .consent { display:flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--muted); }
+    .consent input { width:auto; margin-top: 4px; }
+
+    /* Footer */
+    footer.site {
+      padding: 32px 0; border-top: 1px solid var(--neutral-200);
+      background: color-mix(in oklab, var(--bg) 92%, transparent);
+    }
+    .foot { display:grid; gap: 16px; grid-template-columns: 1.4fr 1fr 1fr 1fr; }
+    .foot .brand { font-size: 18px; }
+    .foot ul { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
+    .foot a { color: var(--text); }
+    .foot small { color: var(--muted); }
+    @media (max-width: 900px) { .foot { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 540px) { .foot { grid-template-columns: 1fr; } }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--surface); border: 1px solid var(--neutral-200); color: var(--heading);
+      padding: 10px 14px; border-radius: 10px; box-shadow: var(--shadow);
+      opacity: 0; transition: .25s ease; z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Misc */
+    .logo-dot { fill: var(--accent); }
+    .illus { border-radius: 12px; border: 1px solid var(--neutral-200); background: color-mix(in oklab, var(--accent) 5%, var(--neutral-150)); min-height: 120px; }
   </style>
 </head>
 <body>
-  <!-- Background -->
-  <div class="circle large"></div>
-  <div class="circle small"></div>
-  <div class="scanner-beam"></div>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <!-- Header -->
-  <header>
-    <h1>Klas.Med</h1>
+  <header class="site">
+    <div class="container nav">
+      <a href="#" class="brand" aria-label="Klas‑Med Home">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#1E88E5" />
+              <stop offset="1" stop-color="#00B8A9" />
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="44" height="44" rx="10" ry="10" fill="url(#g)" />
+          <circle cx="16" cy="16" r="5" fill="#fff" class="logo-dot"/>
+          <rect x="24" y="12" width="12" height="8" rx="4" fill="#fff" opacity=".9"/>
+          <rect x="12" y="26" width="24" height="10" rx="5" fill="#fff" opacity=".9"/>
+        </svg>
+        <span>Klas‑Med</span>
+      </a>
+
+      <nav>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="menu">☰ Menu</button>
+        <ul id="menu" aria-label="Primary">
+          <li><a href="#solutions">Solutions</a></li>
+          <li><a href="#customers">Customers</a></li>
+          <li><a href="#resources">Resources</a></li>
+          <li><a href="#careers">Careers</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a class="btn" href="#contact">Contact</a></li>
+          <li><a class="btn primary" href="#contact">Book a demo</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-right">
+        <button class="theme-toggle" title="Toggle theme" aria-label="Toggle dark mode">🌗</button>
+      </div>
+    </div>
   </header>
 
-  <!-- Hero -->
-  <div class="hero">
-    <h2>Revolutionizing Medical Imaging</h2>
-    <p>Cutting-edge MRI, CT, and X-Ray equipment for the hospitals of tomorrow.</p>
-    <a href="#products" class="cta">Explore Products</a>
-  </div>
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container wrap">
+        <div>
+          <span class="badge">UAE • Healthcare AI • PACS Integration</span>
+          <h1>AI that elevates clinical care in the UAE</h1>
+          <p class="lead">From radiology to hospital workflows, Klas‑Med brings proven AI software, seamless integrations, and on‑site clinical expertise.</p>
+          <div class="actions">
+            <a class="btn primary" href="#contact">Book a demo</a>
+            <a class="btn" href="#solutions">Explore solutions</a>
+          </div>
+        </div>
+        <div class="media tilt" data-tilt>
+          <div class="screen">
+            <div class="mini-pacs">
+              <div class="viewport">
+                <div class="scan"></div>
+              </div>
+              <div class="sidebar">
+                <div class="row"><strong>Study</strong><span>MR Brain</span></div>
+                <div class="row"><strong>AI Triage</strong><span>Priority ↑</span></div>
+                <div class="row"><strong>PACS</strong><span>Connected</span></div>
+                <div class="row"><strong>Report</strong><span>Assisted</span></div>
+                <div class="row"><strong>HL7</strong><span>OK</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="overlay"></div>
+          <div class="shine"></div>
+        </div>
+      </div>
+    </section>
 
-  <!-- Products -->
-  <section id="products">
-    <h2>Our Products</h2>
-    <div class="products">
-      <div class="card">
-        <img src="images/mri.jpg" alt="MRI Scanner">
-        <div class="rotating3d"></div>
-        <h3>MRI Scanners</h3>
-        <p>High-performance MRI scanners designed for precision and efficiency.</p>
+    <!-- FEATURES -->
+    <section class="container">
+      <div class="head">
+        <h2>Built for outcomes</h2>
+        <p>We focus on faster, safer decisions and friction‑free adoption.</p>
       </div>
-      <div class="card">
-        <img src="images/ct.jpg" alt="CT Scanner">
-        <div class="rotating3d"></div>
-        <h3>CT Scanners</h3>
-        <p>Advanced CT scanners built for reliability and speed.</p>
+      <div class="grid feature-grid">
+        <article class="card tilt" data-tilt>
+          <h3>Faster, safer decisions</h3>
+          <p>Evidence‑based AI that augments—never replaces—clinicians.</p>
+        </article>
+        <article class="card tilt" data-tilt>
+          <h3>Seamless integration</h3>
+          <p>PACS/RIS/HIS connectivity that fits real hospital workflows.</p>
+        </article>
+        <article class="card tilt" data-tilt>
+          <h3>Clinical training</h3>
+          <p>On‑site enablement from certified specialists across modalities.</p>
+        </article>
+        <article class="card tilt" data-tilt>
+          <h3>Trusted in the UAE</h3>
+          <p>Local presence and responsive support for rapid roll‑outs.</p>
+        </article>
       </div>
-      <div class="card">
-        <img src="images/xray.jpg" alt="X-Ray Machine">
-        <div class="rotating3d"></div>
-        <h3>X-Ray Machines</h3>
-        <p>Durable X-ray solutions for hospitals and diagnostic centers.</p>
+    </section>
+
+    <!-- SOLUTIONS -->
+    <section id="solutions" class="container solutions">
+      <div class="head">
+        <h2>Solutions that meet real clinical workflows</h2>
+        <p>We pair certified software with local integration and clinical enablement.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card item tilt" data-tilt>
+          <div>
+            <h3>AI for Radiology</h3>
+            <p>Triage & detection modules (e.g., chest, neuro), structured reporting assistance, and QA dashboards.</p>
+            <ul>
+              <li>DICOM‑compatible; integrates with major PACS</li>
+              <li>On‑prem or cloud deployment options</li>
+              <li>Built for measurable turnaround improvements</li>
+            </ul>
+            <p><a class="btn" href="#contact">Request a tailored demo</a></p>
+          </div>
+          <div class="illu" aria-hidden="true"></div>
+        </div>
+
+        <div class="card item tilt" data-tilt>
+          <div>
+            <h3>Workflow &amp; Integration</h3>
+            <p>PACS/RIS/HIS integrations, HL7/DICOM routing, modality worklists, single sign‑on, audit trails.</p>
+            <ul>
+              <li>Fewer clicks for clinicians; consistent routing</li>
+              <li>Fast, safe data flow across systems</li>
+              <li>Accelerated reporting and hand‑offs</li>
+            </ul>
+          </div>
+          <div class="illu" aria-hidden="true"></div>
+        </div>
+
+        <div class="card item tilt" data-tilt>
+          <div>
+            <h3>Clinical Training &amp; Services</h3>
+            <p>On‑site training for MR/CT/X‑ray teams, AI validation protocols, SOPs & adoption playbooks, refresher sessions.</p>
+            <p><a class="btn" href="#contact">Talk to our clinical team</a></p>
+          </div>
+          <div class="illu" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUSTOMERS / STATS / QUOTE -->
+    <section id="customers" class="container">
+      <div class="head">
+        <h2>Proven in the UAE</h2>
+        <p>Selected outcomes from hospital and imaging center deployments.</p>
+      </div>
+      <div class="stats">
+        <div class="stat tilt" data-tilt>
+          <div class="value">↓ up to 30%</div>
+          <div class="label">Reporting time*</div>
+        </div>
+        <div class="stat tilt" data-tilt>
+          <div class="value">High</div>
+          <div class="label">Clinician satisfaction</div>
+        </div>
+        <div class="stat tilt" data-tilt>
+          <div class="value">Multi‑site</div>
+          <div class="label">Standardization</div>
+        </div>
+      </div>
+      <p style="color:var(--muted); margin-top:8px;">*Illustrative targets; replace with validated numbers.</p>
+      <br />
+      <blockquote class="quote">“Klas‑Med’s team understood our clinical reality and delivered an AI workflow our radiologists actually use.”</blockquote>
+    </section>
+
+    <!-- RESOURCES -->
+    <section id="resources" class="container">
+      <div class="head">
+        <h2>Resources &amp; insights</h2>
+        <p>Practical guides to AI validation, PACS integration, and clinical adoption.</p>
+      </div>
+      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+        <article class="card tilt" data-tilt>
+          <h3>Five Steps to Validate AI in Radiology</h3>
+          <p>How to move from pilot to production with confidence.</p>
+          <a href="#" class="btn">Read</a>
+        </article>
+        <article class="card tilt" data-tilt>
+          <h3>PACS/RIS/HIS: Integration Patterns That Work</h3>
+          <p>Common topologies, HL7/DICOM gotchas, and proven playbooks.</p>
+          <a href="#" class="btn">Read</a>
+        </article>
+        <article class="card tilt" data-tilt>
+          <h3>MR Workflow: Reducing Repeats with AI Assist</h3>
+          <p>Practical tips for MR technologists and modality leads.</p>
+          <a href="#" class="btn">Read</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- CAREERS -->
+    <section id="careers" class="container">
+      <div class="head">
+        <h2>Careers at Klas‑Med</h2>
+        <p>Build the future of digital healthcare—right here in the UAE.</p>
+      </div>
+
+      <article class="card job-card tilt" data-tilt>
+        <header>
+          <h3>Clinical Specialist – Medical Technology (MR Technologist Background)</h3>
+          <span class="job-meta">
+            <span class="badge">Full‑time</span>
+            <span>United Arab Emirates (UAE)</span>
+          </span>
+        </header>
+
+        <p><strong>About Klas‑Med:</strong> Klas‑Med is a leading provider of advanced AI‑based software and solutions across the UAE. Our mission is to transform healthcare through innovation, digital integration, and exceptional service.</p>
+
+        <p><strong>Position Summary:</strong> Provide expert clinical support, training, and consultation on our portfolio of medical devices and digital solutions—bridging end‑users and technical teams.</p>
+
+        <h4>Key Responsibilities</h4>
+        <ul>
+          <li>Provide clinical application support for Klas‑Med’s AI solutions.</li>
+          <li>Conduct product demonstrations, training sessions, and help in on‑site installations.</li>
+          <li>Act as the liaison between end‑users and technical/product teams.</li>
+          <li>Support the sales team by providing expert clinical insight during client engagements.</li>
+          <li>Assist with troubleshooting and post‑implementation follow‑ups.</li>
+          <li>Have knowledge of PACS, hospital IT systems, and clinical workflows.</li>
+          <li>Promote and support integration of AI‑powered tools in clinical settings.</li>
+        </ul>
+
+        <h4>Qualifications</h4>
+        <ul>
+          <li>Bachelor’s degree in Medical Technology or a related field.</li>
+          <li>2–3 years of hands‑on clinical experience in a hospital or diagnostic setting is a must.</li>
+          <li>Prior experience as an MR Technologist is essential.</li>
+          <li>Proficient with hospital IT systems (PACS, RIS, HIS) and imaging workflows.</li>
+          <li>Excellent communication and interpersonal skills.</li>
+          <li>Technologically savvy with a strong interest in medical AI and innovation.</li>
+          <li>UAE residency or willingness to relocate preferred.</li>
+        </ul>
+
+        <h4>Desirable Additional Qualities</h4>
+        <ul>
+          <li>Experience conducting product or clinical training.</li>
+          <li>Knowledge of compliance and regulatory standards in medical imaging.</li>
+          <li>Multilingual (Arabic is a plus).</li>
+          <li>Ability to travel across the UAE for on‑site support.</li>
+        </ul>
+
+        <p><strong>To Apply:</strong> Email your CV and a brief cover letter to
+          <a href="mailto:kalyan@klas-med.com?subject=Clinical%20Specialist%20%E2%80%93%20Application">kalyan@klas-med.com</a>.</p>
+
+        <p><a class="btn primary" href="mailto:kalyan@klas-med.com?subject=Clinical%20Specialist%20%E2%80%93%20Application">Apply via Email</a></p>
+      </article>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="container">
+      <div class="head">
+        <h2>About Klas‑Med</h2>
+        <p>We make AI useful in real clinical rooms—not just slides.</p>
+      </div>
+      <div class="grid" style="grid-template-columns: 1.1fr .9fr;">
+        <div class="card">
+          <p>Klas‑Med was founded to make AI adoption straightforward and clinically meaningful. We combine proven software, deep integration expertise, and on‑site clinical training to deliver outcomes providers can measure.</p>
+          <ul>
+            <li><strong>Values:</strong> Patient‑first, Evidence‑based, Reliable, Respectful.</li>
+            <li><strong>Focus:</strong> Radiology AI, PACS/RIS/HIS integration, clinical enablement.</li>
+            <li><strong>Region:</strong> United Arab Emirates (UAE).</li>
+          </ul>
+          <p><a class="btn" href="#contact">Meet the team</a></p>
+        </div>
+        <div class="illus tilt" data-tilt aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="container">
+      <div class="head">
+        <h2>Contact &amp; Demo</h2>
+        <p>Talk to our clinical and integration team about your needs.</p>
+      </div>
+      <form class="contact" aria-label="Contact form">
+        <div>
+          <label for="name">Your name</label>
+          <input id="name" name="name" autocomplete="name" required />
+        </div>
+        <div>
+          <label for="email">Work email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" />
+        </div>
+        <div>
+          <label for="org">Organization</label>
+          <input id="org" name="organization" />
+        </div>
+        <div>
+          <label for="role">Your role</label>
+          <input id="role" name="role" />
+        </div>
+        <div class="full">
+          <label for="msg">How can we help?</label>
+          <textarea id="msg" name="message" placeholder="Tell us about your workflow, systems, and goals." required></textarea>
+        </div>
+        <div class="full consent">
+          <input id="consent" type="checkbox" required />
+          <label for="consent">I agree to the <a href="#privacy">privacy policy</a> and consent to being contacted by Klas‑Med.</label>
+        </div>
+        <div class="full">
+          <button class="btn primary" type="submit">Send message</button>
+          <a class="btn" href="mailto:kalyan@klas-med.com?subject=Klas‑Med%20Demo%20Request">Or email us directly</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="container foot">
+      <div>
+        <a href="#" class="brand">
+          <svg viewBox="0 0 48 48" aria-hidden="true" style="width:24px;height:24px"><rect x="2" y="2" width="44" height="44" rx="10" ry="10" fill="url(#g)" /></svg>
+          <span>Klas‑Med</span>
+        </a>
+        <p style="margin-top:8px;">AI‑powered clinical solutions and integrations for UAE providers.</p>
+        <small>© <span id="year"></span> Klas‑Med LLC. All rights reserved.</small>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#careers">Careers</a></li>
+          <li><a href="#resources">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#solutions">AI for Radiology</a></li>
+          <li><a href="#solutions">Workflow &amp; Integration</a></li>
+          <li><a href="#solutions">Training &amp; Services</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:kalyan@klas-med.com">kalyan@klas-med.com</a></li>
+          <li><a href="#contact">Book a demo</a></li>
+          <li><a href="#privacy" id="privacy">Privacy</a> • <a href="#terms">Terms</a></li>
+        </ul>
       </div>
     </div>
-  </section>
-
-  <!-- Features -->
-  <section class="features">
-    <h2>Why Choose Klas.Med?</h2>
-    <div class="features-grid">
-      <div class="feature"><h3>⚡ Innovation</h3><p>AI-driven imaging for clearer results.</p></div>
-      <div class="feature"><h3>🛡️ Reliability</h3><p>Trusted worldwide for 20+ years.</p></div>
-      <div class="feature"><h3>🌍 Global Reach</h3><p>Supplying hospitals across the globe.</p></div>
-      <div class="feature"><h3>💡 Support</h3><p>24/7 service & software updates.</p></div>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section class="contact">
-    <h2>Contact Us</h2>
-    <form action="https://formspree.io/f/mqazygzb" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="_replyto" placeholder="Your Email" required>
-      <textarea name="message" placeholder="Your Message" required></textarea>
-      <button class="submit" type="submit">Send Message</button>
-    </form>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    © <span id="year"></span> Klas.Med. All Rights Reserved.
   </footer>
 
+  <!-- JSON-LD: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Klas-Med LLC",
+    "url": "https://www.klas-med.com",
+    "logo": "https://www.klas-med.com/assets/logo.png",
+    "sameAs": ["https://www.linkedin.com/company/klas-med"],
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "kalyan@klas-med.com",
+      "areaServed": "AE",
+      "availableLanguage": ["en","ar"]
+    }]
+  }
+  </script>
+
+  <!-- JSON-LD: JobPosting -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    "title": "Clinical Specialist \u2013 Medical Technology (MR Technologist Background)",
+    "description": "Klas\u2011Med is a leading provider of AI\u2011based software and solutions across the UAE. We are seeking a Clinical Specialist with a strong background in Medical Technology and hands\u2011on experience as an MR Technologist to provide clinical support, training, and consultation on our portfolio of medical devices and digital solutions.",
+    "datePosted": "2025-08-19",
+    "employmentType": "FULL_TIME",
+    "hiringOrganization": { "@type": "Organization", "name": "Klas-Med LLC", "sameAs": "https://www.klas-med.com" },
+    "jobLocation": [{ "@type": "Place", "address": { "@type": "PostalAddress", "addressCountry": "AE" } }],
+    "applicantLocationRequirements": { "@type": "Country", "name": "AE" },
+    "educationRequirements": "Bachelor's in Medical Technology or related field",
+    "experienceRequirements": "2\u20133 years clinical experience; prior MR Technologist experience essential",
+    "skills": "PACS, RIS, HIS, imaging workflows, training, communication",
+    "industry": "Healthcare, Medical Imaging, Health IT",
+    "directApply": false
+  }
+  </script>
+
+  <div class="toast" role="status" aria-live="polite" aria-atomic="true">Thanks! We\u2019ll be in touch within one business day.</div>
+
   <script>
+    // ------------------------------
+    // Theme toggle + system preference
+    // ------------------------------
+    const root = document.documentElement;
+    const themeToggle = document.querySelector('.theme-toggle');
+    const storedTheme = localStorage.getItem('km-theme');
+    if (storedTheme) root.setAttribute('data-theme', storedTheme);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme', 'dark');
+
+    themeToggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('km-theme', next);
+    });
+
+    // ------------------------------
+    // Mobile menu
+    // ------------------------------
+    const menuBtn = document.querySelector('.menu-toggle');
+    const menu = document.getElementById('menu');
+    menuBtn.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+
+    // ------------------------------
+    // Cursor-reactive background + accent hue
+    // ------------------------------
+    window.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      root.style.setProperty('--mx', x.toFixed(3));
+      root.style.setProperty('--my', y.toFixed(3));
+      const hue = Math.round(180 + 100 * (x - 0.5)); // 130..230 range
+      root.style.setProperty('--accent-h', hue);
+    }, { passive: true });
+
+    // ------------------------------
+    // Subtle 3D Tilt on hover cards (accessible)
+    // ------------------------------
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const tiltify = (el) => {
+      if (prefersReduced) return;
+      const damp = 12; // lower = stronger tilt
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        const pctX = ((e.clientX - r.left) / r.width) * 2 - 1;
+        const pctY = ((e.clientY - r.top) / r.height) * 2 - 1;
+        el.style.transform = `rotateX(${(-pctY * damp)}deg) rotateY(${(pctX * damp)}deg) translateZ(0)`;
+      });
+      el.addEventListener('pointerleave', () => {
+        el.style.transform = 'rotateX(0) rotateY(0)';
+      });
+    };
+    document.querySelectorAll('[data-tilt]').forEach(tiltify);
+
+    // ------------------------------
+    // Contact form (demo only)
+    // ------------------------------
+    const form = document.querySelector('form.contact');
+    const toast = document.querySelector('.toast');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2600);
+      form.reset();
+    });
+
+    // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
